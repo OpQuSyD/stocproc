@@ -2,11 +2,9 @@
     The method_fft module provides convenient function to
     setup a stochastic process generator using fft method
 """
-from __future__ import division, print_function
-
 # from .tools import ComplexInterpolatedUnivariateSpline
 # from functools import lru_cache
-import fcSpline
+import fastcubicspline as fcSpline
 from functools import partial
 import logging
 import mpmath
@@ -25,6 +23,7 @@ MAX_FLOAT = sys.float_info.max
 log = logging.getLogger(__name__)
 
 from .config import USE_NORMALIZED_DIFF
+
 
 class FTReferenceError(Exception):
     pass
@@ -73,7 +72,7 @@ def find_integral_boundary(integrand, tol, ref_val, max_val, x0):
             _i += 1
             if _i > _max_num_iteration:
                 raise RuntimeError("max number of iteration reached")
-            x = ref_val * (scale ** n)
+            x = ref_val * (scale**n)
             try:
                 I_x = integrand(x)
                 assert I_x is not np.nan
@@ -128,7 +127,6 @@ def find_integral_boundary_auto(
     max_val_left=None,
     max_val_right=None,
 ):
-
     ref_val_left = ref_val if ref_val_left is None else ref_val_left
     ref_val_right = ref_val if ref_val_right is None else ref_val_right
     max_val_left = max_val if max_val_left is None else max_val_left
@@ -193,7 +191,6 @@ def get_t_max_for_singularity_ts(f, a, b, tol):
     t_max = 3
 
     while t_max < 6:
-
         s_tmax = np.sinh(t_max) * np.pi / 2
         g_tmax = 1 / (np.exp(s_tmax) * np.cosh(s_tmax))
         w_tmax = np.pi * np.cosh(t_max) / 2 / np.cosh(s_tmax) ** 2
@@ -345,7 +342,7 @@ def _f_opt_for_SLSQP_minimizer(
     if key in _f_opt_cache:
         d, a_, b_ = _f_opt_cache[key]
         return np.log10(d)
-    tol = 10 ** x
+    tol = 10**x
 
     try:
         if b_only:
@@ -455,7 +452,6 @@ def opt_integral_boundaries_use_SLSQP_minimizer(
 
 
 def opt_integral_boundaries(integrand, t_max, ft_ref, tol, opt_b_only, diff_method):
-
     tol_0 = 2
     # N_0 = 10
     N_0 = 5
@@ -507,7 +503,6 @@ def opt_integral_boundaries(integrand, t_max, ft_ref, tol, opt_b_only, diff_meth
 def get_N_a_b_for_accurate_fourier_integral(
     integrand, t_max, tol, ft_ref, opt_b_only, diff_method=_absDiff
 ):
-
     """ """
 
     if opt_b_only:

@@ -14,7 +14,7 @@ import tempfile
 
 from . import method_kle
 from . import method_ft
-import fcSpline
+import fastcubicspline as fcSpline
 
 import logging
 
@@ -300,7 +300,7 @@ class StocProc(abc.ABC):
             # random complex normal samples
             y = np.random.normal(
                 scale=self._one_over_sqrt_2, size=2 * self.get_num_y()
-            ).view(np.complex)
+            ).view(np.complex128)
         else:
             if len(y) != self.get_num_y():
                 raise RuntimeError(
@@ -379,7 +379,7 @@ class StocProc_KLE(StocProc):
         ng_fac=4,
         meth="fourpoint",
         diff_method="full",
-        dm_random_samples=10 ** 4,
+        dm_random_samples=10**4,
         seed=None,
         align_eig_vec=False,
         scale=1,
@@ -894,7 +894,6 @@ class StocProc_TanhSinh(StocProc):
         for i in range(len(self.t)):
             z_dot[i] = np.sum(last)
             last *= exp_fac
-
 
         return z_dot
 

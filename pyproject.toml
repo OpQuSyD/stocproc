@@ -17,16 +17,18 @@ script = "build.py"
 generate-setup-file = true
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = "^3.9"
 scipy = "^1.7.3"
 mpmath = "^1.2.1"
-fcSpline = { git = "https://github.com/vale981/fcSpline" }
+fastcubicspline = "^1.1.5"
 numpy = "^1.22.2"
 setuptools = "*"
+matplotlib = "^3.8.2"  # used in the examples only
+
 
 [tool.poetry.dev-dependencies]
 Cython = "^0.29.25"
-black = "^21.12b0"
+black = ">21.12b0"
 
 [build-system]
 requires = ["poetry>=0.12", "cython", "setuptools", "numpy"]
